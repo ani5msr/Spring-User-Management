@@ -8,8 +8,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 @Getter
 @Setter
 @Builder
@@ -31,15 +36,17 @@ public class UserModel implements UserDetails {
 
 	@Builder.Default
 	private Boolean enabled = false;
-	@Builder.Default
-	private Role userRole = Role.USER;
+	private List<Role> roles = new ArrayList<>();
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-
-		final SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(userRole.name());
-		return Collections.singletonList(simpleGrantedAuthority);
-	}
+		  Set<AuthModel> authorityModels = new HashSet<>();
+	        roles.forEach(
+	                role -> {
+	                    authorityModels.add(new AuthModel(role.getRoleName()));
+	                }
+	        );
+	        return authorityModels;}
 
 	@Override
 	public String getPassword() {
