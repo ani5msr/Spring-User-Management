@@ -13,6 +13,6 @@ import java.util.*;
 
 @Service
 @NoArgsConstructor
-public class UserService {
+public class UserService implements UserDetailsService {
 	
 }
